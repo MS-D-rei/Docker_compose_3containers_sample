@@ -19,6 +19,7 @@ export default function App() {
         if (!response.ok) {
           throw new Error(data.message || 'Fetching the goals failed');
         }
+        setLoadingGoals(data.goals);
       } catch (err) {
         if (err instanceof Error) {
           setError(err.message);
