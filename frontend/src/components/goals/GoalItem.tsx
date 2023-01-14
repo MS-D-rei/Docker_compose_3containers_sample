@@ -7,12 +7,8 @@ interface GoalItemProps {
 }
 
 export default function GoalItem({ id, text, onDelete }: GoalItemProps) {
-  const deleteHandler = () => {
-    onDelete.bind(null, id);
-  };
-
   return (
-    <li className="goal-item" onClick={deleteHandler}>
+    <li className="goal-item" onClick={onDelete.bind(null, id)}>
       {text}
     </li>
   );
