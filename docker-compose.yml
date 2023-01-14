@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo
+    volumes:
+      - data:/data/db
+    # environment:
+    #   - MONGO_INITDB_ROOT_USERNAME=MS-DDD
+    #   - MONGO_INITDB_ROOT_PASSWORD=secretkey
+    env_file:
+      - ./env/mongodb.env
+    networks:
+      - backend-db-net
+  backend:
+    # build image with Dockerfile. There are short form and long one.
+    # build: ./backend
+    build:
+      # target directroy
+      context: ./backend
+      # Dockerfile name
+      dockerfile: Dockerfile
+    volumes:
+      - logs:/app/logs
+      # can use relative path
+      - ./backend:/app
+      - /app/node_modules
+    env_file:
+      - ./env/backend.env
+    networks:
+      - backend-db-net
+      # - frontend-net
+    ports:
+      - 80:80
+    # run mongodb, and then backend
+    depends_on:
+      - mongodb
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend/src:/app/src
+    # networks:
+    #   - frontend-net
+    ports:
+      - 5173:5173
+    tty: true
+    stdin_open: true
+    depends_on:
+      - backend
+
+# have to list named volumes.
+volumes:
+  # if no setting, default setting will be applied
+  data:
+  logs:
+
+# need to list named network
+networks:
+  # if no setting, default setting will be applied
+  backend-db-net:
+  # frontend-net:
