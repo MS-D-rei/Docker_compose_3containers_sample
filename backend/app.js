@@ -20,10 +20,7 @@ app.use(morgan("combined", { stream: accessLogStream }));
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origins", [
-    "http://127.0.0.1:5173",
-    "http://localhost:5173",
-  ]);
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
   res.setHeader("Access-Control-Allow-Methods", [
     "GET",
     "POST",
