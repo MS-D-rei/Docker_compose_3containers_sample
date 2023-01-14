@@ -37,7 +37,7 @@ app.get("/goals", async (req, res) => {
     const goals = await Goal.find();
     res.status(200).json({
       goals: goals.map((goal) => ({
-        id: goal.id,
+        id: goal._id,
         text: goal.text,
       })),
     });
@@ -63,8 +63,10 @@ app.post("/goals", async (req, res) => {
     await goal.save();
     res
       .status(201)
-      .json({ message: "Ooal saved", goal: { id: goal.id, text: goalText } });
+      .json({ message: "Ooal saved", goal: { id: goal._id, text: goalText } });
+    console.log("Stored new goal");
   } catch (err) {
+    console.error('Error: POST goal failed');
     console.error(err.message);
     res.status(500).json({ message: "Failed to save goal" });
   }
@@ -77,6 +79,7 @@ app.delete("/goals/:id", async (req, res) => {
     res.status(200).json({ message: "Deleted goal" });
     console.log("Deleted the goal");
   } catch (err) {
+    console.log('Error: DELETE goal failed')
     console.error(err.message);
     res.status(500).json({ message: "Failed to delete goal" });
   }
@@ -92,6 +95,7 @@ mongoose.connect(
   },
   (err) => {
     if (err) {
+      console.error('FAILED TO CONNECT TO MONGODB');
       console.error(err);
     } else {
       console.log("CONNECTED TO MONGODB");
