@@ -5,6 +5,8 @@ services:
     image: mongo
     volumes:
       - data:/data/db
+    # can change container name
+    # container_name: mongodb
     # environment:
     #   - MONGO_INITDB_ROOT_USERNAME=MS-DDD
     #   - MONGO_INITDB_ROOT_PASSWORD=secretkey
